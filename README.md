@@ -32,15 +32,15 @@ may break user environment if they use conda pyqt, or use pyside2
 ```python
 # bad setup.cfg
 [options]
-install_requires = 
-    PyQt5  
+install_requires =
+    PyQt5
 ```
 
 ```python
 # good setup.cfg
 [options]
-install_requires = 
-    qtpy  
+install_requires =
+    qtpy
 ```
 
 [details](https://napari.org/plugins/stable/best_practices.html#don-t-include-pyside2-or-pyqt5-in-your-plugin-s-dependencies)

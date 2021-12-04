@@ -2,15 +2,13 @@
 
 use as a pre-commit hook, or command line interface.
 """
-
 import argparse
 import logging
 import re
 from configparser import ConfigParser
 from fnmatch import fnmatch
 from pathlib import Path
-from typing import Callable, List, Optional, Sequence, Set, Tuple
-
+from typing import Callable, List, Optional, Sequence, Tuple
 
 logging.getLogger("grimp").setLevel(logging.ERROR)
 
@@ -68,7 +66,15 @@ def check_setup_cfg(fname: str) -> bool:
     cfg.read(fname)
 
     retv = False
-    requires = cfg.get("options", "install_requires", fallback="").strip().splitlines()
+    requires = (
+        cfg.get(
+            "options",
+            "install_requires",
+            fallback="",
+        )
+        .strip()
+        .splitlines()
+    )
     if requires:
 
         # check for Forbidden dependencies, like PyQt5, etc...
@@ -76,7 +82,9 @@ def check_setup_cfg(fname: str) -> bool:
             lib = _req_base(req)
             err = FORBIDDEN_REQUIRES.get(lib.lower())
             if err:
-                print(f"Forbidden dependency detected in setup.cfg ({lib!r}): {err}")
+                print(
+                    f"Forbidden dependency detected in setup.cfg ({lib!r}): {err}",
+                )
                 retv = True
 
     return retv
@@ -89,7 +97,9 @@ def check_requirements_txt(fname: str) -> bool:
         lib = _req_base(line)
         err = FORBIDDEN_REQUIRES.get(lib.lower())
         if err:
-            print(f"Forbidden dependency detected in requirements.txt ({lib!r}): {err}")
+            print(
+                f"Forbidden dependency detected in requirements.txt ({lib!r}): {err}",
+            )
             retv = True
     return retv
 
@@ -116,9 +126,10 @@ def _check_imports(fname: str) -> bool:
     for imp in imports:
         err = FORBIDDEN_IMPORTS.get(imp.imported.name)
         if err:
-            print(
+            msg = (
                 f"Forbidden import detected ({imp.imported.name!r}) in {fname!r}: {err}"
             )
+            print(msg)
             retv = True
 
     return retv
@@ -147,7 +158,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                     for f in p.glob("**/*")
                     if f.is_file()
                     if not str(f).startswith(".")
-                ]
+                ],
             )
 
     return sum(check_file(filename) for filename in args.filenames)
