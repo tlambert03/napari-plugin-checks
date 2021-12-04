@@ -12,7 +12,6 @@ from pathlib import Path
 from typing import Callable, List, Optional, Sequence, Set, Tuple
 
 
-
 logging.getLogger("grimp").setLevel(logging.ERROR)
 
 Str2Bool = Callable[[str], bool]
@@ -87,7 +86,6 @@ def check_setup_cfg(fname: str) -> bool:
 def check_requirements_txt(fname: str) -> bool:
     retv = False
     for line in Path(fname).read_text().strip().splitlines():
-        print("l", line)
         lib = _req_base(line)
         err = FORBIDDEN_REQUIRES.get(lib.lower())
         if err:
@@ -106,8 +104,9 @@ def _check_imports(fname: str) -> bool:
     from grimp.domain.valueobjects import Module
 
     p = Path(fname)
+    if not p.parent or str(p.parent) == ".":
+        return False
     root = p.parent
-
     module = Module(f"{p.parent.name}.{p.name[:-3]}")
     fs = filesystem.FileSystem()
     scanner = importscanner.ImportScanner({root: {module}}, fs, True)
