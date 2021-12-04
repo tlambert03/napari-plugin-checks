@@ -35,4 +35,4 @@ def test_bad_imports(fname, capsys):
 
 
 def test_main():
-    assert main([str(BAD), str(GOOD)]) == len(list(BAD.iterdir()))
+    assert main([str(BAD)]) == len(list(BAD.iterdir()))
