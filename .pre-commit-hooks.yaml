@@ -1,0 +1,6 @@
+- id: napari-plugin-precommit
+  name: napari-plugin-precommit
+  description: basic checks for napari plugins
+  entry: napari-plugin-precommit
+  language: python
+  language_version: python3
