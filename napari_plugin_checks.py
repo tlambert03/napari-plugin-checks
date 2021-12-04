@@ -105,7 +105,7 @@ def _check_imports(fname: str) -> bool:
 
     p = Path(fname)
     if not p.parent or str(p.parent) == ".":
-        return False
+        return False  # pragma: no cover
     root = p.parent
     module = Module(f"{p.parent.name}.{p.name[:-3]}")
     fs = filesystem.FileSystem()
