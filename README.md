@@ -12,7 +12,7 @@ For background, read [Best practices when developing napari plugins](https://nap
 
 ## As a pre-commit hook
 
-See [pre-commit](https://github.com/pre-commit/pre-commit) for instructions
+See [pre-commit](https://pre-commit.com/) for instructions on using pre-commit.
 
 Sample `.pre-commit-config.yaml`:
 
