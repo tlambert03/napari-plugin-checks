@@ -20,6 +20,9 @@ def test_requirements(capsys):
 def test_fine_file():
     assert check_file(str(GOOD / "boring.py")) is False
 
+def test_unknown_file():
+    assert check_file("asdfkjfadsf.asdf") is False
+
 @pytest.mark.parametrize("fname", ["imports_pyqt5.py", "imports_pyside2.py"])
 def test_bad_imports(fname, capsys):
     assert check_file(str(BAD / fname))

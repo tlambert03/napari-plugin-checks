@@ -5,3 +5,4 @@
 /.coverage
 /.tox
 /venv*
+coverage.xml
