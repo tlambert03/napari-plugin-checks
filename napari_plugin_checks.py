@@ -150,11 +150,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                 ]
             )
 
-    retv = 0
-    for filename in args.filenames:
-        if check_file(filename):
-            retv = 1
-    return 0
+    return sum(check_file(filename) for filename in args.filenames)
 
 
 if __name__ == "__main__":
