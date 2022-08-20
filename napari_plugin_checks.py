@@ -57,7 +57,7 @@ def match(pattern: str) -> Callable[[Str2Bool], Str2Bool]:
 
 def _req_base(req: str) -> str:
     basem = re.match(BASE_NAME_REGEX, req.split(";")[0])
-    return basem.group(0).strip() if basem else ""
+    return basem[0].strip() if basem else ""
 
 
 @match("setup.cfg")
@@ -112,14 +112,23 @@ def check_py(fname: str) -> bool:
 def _check_imports(fname: str) -> bool:
     from grimp.adaptors import filesystem, importscanner
     from grimp.domain.valueobjects import Module
+    from grimp.application.ports.modulefinder import FoundPackage
 
     p = Path(fname)
     if not p.parent or str(p.parent) == ".":
         return False  # pragma: no cover
     root = p.parent
     module = Module(f"{p.parent.name}.{p.name[:-3]}")
-    fs = filesystem.FileSystem()
-    scanner = importscanner.ImportScanner({root: {module}}, fs, True)
+
+    scanner = importscanner.ImportScanner(
+        file_system=filesystem.FileSystem(),
+        found_packages={
+            FoundPackage(
+                name=root.name, directory=str(root), modules=frozenset([module])
+            )
+        },
+        include_external_packages=True,
+    )
 
     imports = scanner.scan_for_imports(module=module)
     retv = False
@@ -136,11 +145,11 @@ def _check_imports(fname: str) -> bool:
 
 
 def check_file(filename: str) -> bool:
-    for checker, function in CHECKERS:
-        if checker(filename):
-            # the first checker wins, and must dispatch to others manually if desired.
-            return function(filename)
-    return False
+    # the first checker wins, and must dispatch to others manually if desired.
+    return next(
+        (function(filename) for checker, function in CHECKERS if checker(filename)),
+        False,
+    )
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
