@@ -7,7 +7,7 @@
 
 A tool (and pre-commit hook) to statically some best practices for napari plugins
 
-For background, read [Best practices when developing napari plugins](https://napari.org/plugins/best_practices.html)
+For background, read [Best practices when developing napari plugins](https://napari.org/stable/plugins/building_a_plugin/best_practices.html)
 
 
 ## As a pre-commit hook
@@ -43,8 +43,7 @@ install_requires =
     qtpy
 ```
 
-[details](https://napari.org/plugins/best_practices.html#don-t-include-pyside2-or-pyqt5-in-your-plugin-s-dependencies)
-
+[details](https://napari.org/stable/plugins/building_a_plugin/best_practices.html#don-t-include-pyside2-or-pyqt5-in-your-plugin-s-dependencies)
 ### Don't import directly from PyQt5 import PySide2
 
 ```python
